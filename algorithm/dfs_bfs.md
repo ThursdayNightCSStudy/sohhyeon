@@ -17,20 +17,21 @@ DFS와 BFS는 비선형 자료구조인 그래프에 대한 탐색 알고리즘�
 
 ```js
 const bfs = (graph, startNode) => {
-  cosnt visited = []; // 탐색한 노드들이 저장된 queue
+  const visited = []; // 탐색한 노드들이 저장된 queue
   let needToVisit = []; // 탐색할 노드들이 저장된 queue (FIFO, 선입선출)
 
   needToVisit.push(startNode); // 노드 탐색 시작!
 
-  while(needToVisit.length) { // 탐색할 노드가 없을때까지
+  while (needToVisit.length) {
+    // 탐색할 노드가 없을때까지
     const node = needToVisit.shift(); // 가장 먼저 저장된 첫 번째 데이터가 먼저 나감 (queue)
-    if(!visited.includes(node)) {
+    if (!visited.includes(node)) {
       visited.push(node);
       needToVisit = [...needToVisit, ...graph[node]]; // bfs는 방문 예정인 노드를 우선 두고, 꺼내온 노드의 자식 노드들을 뒤에 위치시킨다.
     }
     return visited;
   }
-}
+};
 ```
 
 # DFS (Depth First Search)
