@@ -37,3 +37,51 @@ function solution(arr) {
   return answer;
 }
 ```
+
+## 이진 탐색을 사용한 풀이
+
+> ### 이진 탐색 다시 살펴보기
+>
+> 이진 탐색이란, <b>정렬된 배열</b>에서 특정한 값을 찾아내는 알고리즘이다. 배열의 중간 값과 타겟을 비교한다. 타겟이 중간값보다 작으면 좌측의 데이터를 대상으로, x가 중간값보다 크면 우측의 데이터를 대상으로 다시 탐색한다. 동일한 방법으로 다시 중간 값을 선택해 비교한다.
+
+- 주어진 배열을 반복문으로 탐색한다.
+- lis 배열은 오름차순 정렬된 데이터가 저장된다.
+- 주어진 배열의 i번째 값이 lis에 들어갈 위치를 이진 탐색한다.
+- binarySearch는 반복문을 사용해서 이진탐색을 구현한 함수로, 정렬된 배열을 입력받아 타겟의 위치(인덱스)를 리턴한다. (정렬된 배열에 타겟이 없으면 -1)
+- O(logn)의 시간 복잡도를 갖는다.
+
+```js
+function binarySearch(sortedArray, target) {
+  let left = 0;
+  let right = sortedArray.length - 1;
+
+  while (left <= right) {
+    let mid = Math.floor((left + right) / 2);
+
+    if (sortedArray[mid] < target) {
+      left = mid + 1;
+    } else if (sortedArray[mid] > target) {
+      right = mid - 1;
+    } else {
+      return mid;
+    }
+  }
+  return -1;
+}
+
+function solution(arr) {
+  const size = arr.length;
+  const lis = [];
+  lis.push(arr[0]);
+
+  for (let i = 1; i < size; i++) {
+    if (arr[i] > lis[lis.length - 1]) {
+      lis.push(arr[i]);
+    } else {
+      let idx = binarySearch(lis, arr[i]);
+      list[idx] = arr[i];
+    }
+  }
+  return lis.length;
+}
+```
