@@ -18,17 +18,139 @@
 - 커널모드
   - 모든 자원(드라이버, 메모리, CPU 등)에 접근, 명령 가능
 
+## 시스템 콜 유형
+
+- 프로세스 컨트롤
+  - 프로세스 생성 및 종료
+  - 메모리에 로드, 실행
+  - 프로세스 속성 값 확인, 지정
+  - wait 이벤트, signal 이벤트
+  - 메모리 할당 
+
+- 파일 매니지먼트
+  - 파일 생성, 파일 삭제
+  - 열기, 닫기
+  - 읽기, 쓰기, Reposition
+  - 파일 속성 값 확인, 지정
+
+- 디바이스 매니지먼트
+  - 디바이스 요청 및 해제
+  - 읽기, 쓰기, Reposition
+  - 디바이스 속성 확인, 지정
+  - 비물리적 디바이스 해제 및 장착
+
+- 정보 관리
+  - 시간 확인, 시간 지정
+  - 시스템 데이터 확인, 지정
+  - 프로세스, 파일, 디바이스 속성 조회 및 설정
+
+- 통신
+  - 메시지 송,수신
+  - 상태 정보 전달
+  - remote 디바이스 해제 및 장착 
+
+- 보안
+  - permission 설정 및 획득
 
 ## 예시 
 
 ```java
 cp in.txt out.txt // in.txt 내용을 복사해서 out.txt 파일을 만들어라
 ```
-위의 명령어를 실행했을때, 동작하는 시스템 콜을 살펴보자.
+다음은 위의 명령어를 실행했을때, 시스템 콜이 동작하는 과정이다.
 
 <img src="../images/system_call_example.png"/>
 
 
+## fork, wait, exec
+
+### fork
+
+fork는 프로세스를 생성할때 사용한다.
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+
+int main(int argc, char *argv[]) {
+    printf("pid : %d", (int) getpid()); 
+    
+    int rc = fork();				
+    
+    if (rc < 0) {
+        exit(1);
+    }								
+    else if (rc == 0) {				
+        printf("child (pid : %d)", (int) getpid());
+    }
+    else {							
+        printf("parent of %d (pid : %d)", rc, (int)getpid());
+    }
+}
+```
+
+### wait
+
+부모 프로세스가 자식 프로세스의 종료를 대기해야 하는 경우 사용
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
+
+int main(int argc, char *argv[]) {
+    printf("pid : %d", (int) getpid()); 
+    
+    int rc = fork();				
+    
+    if (rc < 0) {
+        exit(1);
+    }									
+    else if (rc == 0) {					
+        printf("child (pid : %d)", (int) getpid());
+    }
+    else {								
+        int wc = wait(NULL)				
+        printf("parent of %d (wc : %d / pid : %d)", wc, rc, (int)getpid());
+    }
+}
+```
+
+### exec
+
+fork는 자신의 복사본을 생성하여 실행하는 반면, exec는 자신의 복사본이 아닌 다른 프로그램을 실행해야 할 경우에 사용
+
+```c
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <sys/wait.h>
+
+int main(int argc, char *argv[]) {
+    printf("pid : %d", (int) getpid()); 
+    
+    int rc = fork();					
+    
+    if (rc < 0) {
+        exit(1);
+    }								
+    else if (rc == 0) {				
+        printf("child (pid : %d)", (int) getpid());
+        char *myargs[3];
+        myargs[0] = strdup("wc");		
+        myargs[1] = strdup("p3.c");	
+        myargs[2] = NULL;				
+        execvp(myarges[0], myargs);		
+        printf("this shouldn't print out") /
+    }
+    else {								
+        int wc = wait(NULL)			
+        printf("parent of %d (wc : %d / pid : %d)", wc, rc, (int)getpid());
+    }
+}
+```
 
 > reference
 - <a href="https://coduking.com/entry/%EC%9A%B4%EC%98%81%EC%B2%B4%EC%A0%9C-%EC%9C%A0%EC%A0%80%EB%AA%A8%EB%93%9C-%EC%BB%A4%EB%84%90%EB%AA%A8%EB%93%9C-%EC%8B%9C%EC%8A%A4%ED%85%9C%EC%BD%9C">운영체제: 유저모드, 커널모드, 시스템콜</a>
