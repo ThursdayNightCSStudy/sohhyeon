@@ -1,5 +1,44 @@
 # Array
 
+```js
+class Array {
+  constructor() {
+    this.length = 0;
+    this.data = {};
+  }
+
+  push(element) {
+    this.data[this.length] = element;
+    this.length++;
+    return this.data;
+  }
+
+  pop() {
+    const element = this.data[this.length - 1];
+    this.length--;
+    return this.data;
+  }
+
+  insertAt(item, index) {
+    for (let i = this.length; i > index; i--) {
+      this.data[i] = this.data[i - 1];
+    }
+    this.data[index] = item;
+    this.legnth++;
+    return this.data;
+  }
+
+  deleteAt(item, index) {
+    for (let i = index; i < this.length - 1; i++) {
+      this.data[i] = this.data[i + 1];
+    }
+    delete this.data[this.length - 1];
+    this.length--;
+    return this.data;
+  }
+}
+```
+
 ## 빠른 접근 O(1)
 
 일반적으로 배열의 요소는 하나의 타입으로 통일되어 있으며 서로 연속적으로 인접해있다. 배열의 요소는 동일한 크기를 갖고, 연속적으로 이어져있어 인덱스로 한번에 요소에 접근할 수 있어 O(1)의 시간 복잡도를 가져 매우 효율적이다.
