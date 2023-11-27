@@ -2,6 +2,8 @@
 
 <img src="./images/Treedatastructure.png">
 
+트리는 노드가 0개 이상의 자식을 가지는 자료 구조이다. 각 노드는 value를 갖고, 그래프와 마찬가지로 각 노드는 간선으로 연결되어있다. 트리는 그래프의 한 종류이지만, 그래프는 트리가 아니다.
+
 ## 트리 관련 용어 정리
 
 - Parent node
@@ -54,6 +56,15 @@
 - Degree of a node
   해당 노드에 연결된 서브 트리의 개수를 노드의 정도라고 한다. 리프 노드의 정도는 0이다.
 
+## 트리 자료구조 사용 사례
+
+- Maps
+- Sets
+- Databases
+- Prority Queues
+- File Systems
+- HTML Dom Tree (Document Object Model)
+
 ## 트리 자료 구조를 사용하는 이유
 
 - 계층을 이루는 데이터를 저장할 수 있다.
@@ -74,8 +85,8 @@ class Node {
     this.childeren = [];
   }
 
-  insertNode(data) {
-    this.children.push(new Node(data));
+  insertNode(newNode) {
+    this.children.push(newNode);
   }
 
   removeNode(data) {
