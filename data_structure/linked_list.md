@@ -21,55 +21,83 @@
 ```js
 class Node {
   constructor(element) {
-    this.element = element;
-    this.next = null;
+    this.element = element; // 데이터
+    this.next = null; // 다음 노드를 가리키는 포인터
   }
 }
 
 class LinkedList {
   constructor() {
-    this.head = new Node('head');
+    this.head = null;
+    this.size = 0;
   }
 
-  // 마지막 요소로 추가
+  // 리스트의 마지막 요소로 추가
   append(newElement) {
     let newNode = new Node(newElement);
-    let current = this.head;
-    while (current.next != null) {
-      current = current.next;
+    if (this.isEmpty()) {
+      this.head = newNode;
+    } else {
+      let current = this.head;
+      while (current.next) {
+        current = current.next;
+      }
+      current.next = newNode;
     }
-    current.next = newNode;
+    this.size++;
   }
 
   // 특정 노드 다음으로 추가
-  insert(newElement, item) {
+  insertAt(newElement, item) {
     let newNode = new Node(newElement);
-    let current = this.find(item);
+    let current = this.findNodeBy(item);
     newNode.next = current.next;
     current.next = newNode;
   }
 
   // 특정 노드 삭제
   remove(item) {
-    let preNode = this.findPrevious(item);
-    preNode.next = peNode.next.next;
+    let preNode = this.findPreviousNodeBy(item);
+    preNode.next = preNode.next.next;
   }
 
   // 특정 노드 조회
-  find(item) {
-    let currentNod = this.head;
+  findNodeBy(item) {
+    let currentNode = this.head;
     while (currentNode.element !== item) {
       currentNode = currentNode.next;
     }
     return currentNode;
   }
   // 특정 노드 전의 노드 조회
-  findPrevious(item) {
+  findPreviousNodeBy(item) {
+    let previousNode = this.head;
+    while (previousNode.next && previousNode.next.element !== item) {
+      previousNode = previousNode.next;
+    }
+    return previousNode;
+  }
+
+  indexOf(item) {
     let currentNode = this.head;
-    while (currentNode.next !== null && currentNode.next.element !== item) {
+    let index = 0;
+    while (currentNode) {
+      if (currentNode.element === item) {
+        return index;
+      }
+      index++;
       currentNode = currentNode.next;
     }
-    return currentNode;
+    return -1;
+  }
+
+  isEmtpy() {
+    return this.size === 0;
   }
 }
 ```
+
+> reference
+
+- <a href="https://www.geeksforgeeks.org/implementation-linkedlist-javascript/">Implementation of LinkedList in Javascript
+  </a>
