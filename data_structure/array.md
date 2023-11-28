@@ -15,6 +15,7 @@ class Array {
 
   pop() {
     const element = this.data[this.length - 1];
+    delete this.data[this.legnth-1]; 
     this.length--;
     return this.data;
   }
