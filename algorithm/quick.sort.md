@@ -77,7 +77,7 @@ function quickSortHelper(items, left, right) {
 }
 
 function partition(array, left, right) {
-  const pivot = (array = array[Math.floor((left + right) / 2)]); // 가운데 값을 피벗으로 설정
+  const pivot = array[Math.floor((left + right) / 2)]; // 가운데 값을 피벗으로 설정
   while (left <= right) {
     while (pivot > array[left]) {
       left++;

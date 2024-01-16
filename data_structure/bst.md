@@ -92,7 +92,7 @@ removeNode(node, key) {
 
   else {
     // 삭제하려는 노드가 리프 노드일 경우
-    if(node.lefrt === null && node.right === null) {
+    if(node.left === null && node.right === null) {
       node = null;
       return node;
     }
